@@ -2,7 +2,6 @@ from tda import auth
 import config
 import datetime
 import matplotlib.pyplot as plt
-
 ticker='QQQ' #type symbol with all capitol letters ex. 'AAPL'
 expiry='2023-01-20' #type str in YYYY-MM-DD format
 
@@ -11,7 +10,7 @@ try:
     c = auth.client_from_token_file(config.token_path, config.api_key)
 except FileNotFoundError:
     from selenium import webdriver
-    with webdriver.Chrome(executable_path='/Users/ben/opt/anaconda3/lib/td/chromedriver') as driver:
+    with webdriver.Chrome(executable_path=config.chromedriver_path) as driver:
         c = auth.client_from_login_flow(
             driver, config.api_key, config.redirect_uri, config.token_path)
 start_date = datetime.datetime.strptime(expiry, '%Y-%m-%d').date()
@@ -19,8 +18,8 @@ end_date = datetime.datetime.strptime(expiry, '%Y-%m-%d').date()
 r = c.get_option_chain(ticker, contract_type=c.Options.ContractType.PUT, from_date=start_date,to_date=end_date,strike_count=100)
 
 underlying_price=(r.json()['underlyingPrice'])
-print(underlying_price)
-xx=(r.json()['putExpDateMap']['2023-01-20:42'])
+dte=start_date-datetime.date.today()
+xx=(r.json()['putExpDateMap'][expiry+":"+str(dte.days)])
 vols={}
 deltas={}
 vegas={}
