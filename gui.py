@@ -177,7 +177,7 @@ class Ui_MainWindow(object):
         self.delta_label.setText(_translate("MainWindow", "Delta"))
         self.gamma_label.setText(_translate("MainWindow", "Gamma"))
         self.theta_label.setText(_translate("MainWindow", "Theta"))
-        self.key_input.setText(_translate("MainWindow","K5XWGTT7RXB3POETTQLZSQALSOUBBDU0"))
+        self.key_input.setText(_translate("MainWindow","KEY"))
 
 if __name__ == "__main__":
     import sys
