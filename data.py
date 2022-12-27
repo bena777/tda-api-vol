@@ -2,6 +2,7 @@ from tda import auth
 import config
 import datetime
 import matplotlib.pyplot as plt
+import mplcyberpunk
 ticker='QQQ' #type symbol with all capitol letters ex. 'AAPL'
 expiry='2023-01-20' #type str in YYYY-MM-DD format
 
@@ -35,9 +36,11 @@ for i in xx:
 strikes=list(vols.keys())
 strikes=[float(x) for x in strikes]
 strikes=[int(x) for x in strikes]
+plt.style.use("cyberpunk")
 figure, axis = plt.subplots(2, 2)
 plt.setp(axis, xticks=strikes[::16])
-figure.suptitle(ticker+" data")
+figure.suptitle(f"{ticker} {expiry} {dte.days}dte")
+#figure.suptitle(ticker+" data")
 
 # red vertical line is (x=current underlying price)
 axis[0,0].set_title("Vol surface")
