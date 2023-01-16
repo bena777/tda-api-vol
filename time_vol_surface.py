@@ -38,7 +38,7 @@ get_vol_time_surface(ticker)
 #loops the function for every expiry of the option
 for i in expiries:
     get_vol_time_surface(ticker,i)
-# plots labels, legend, and title
+# plots labels, legend, and title in matplotlib
 plt.xlabel("Strikes")
 plt.ylabel("Vols")
 plt.title(ticker+" vol surface")
