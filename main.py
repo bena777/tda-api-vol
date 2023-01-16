@@ -1,6 +1,7 @@
 from tda import auth
 import config
 
+#function acesses the TDA API to gain acess to the data
 def tda_auth():
     try:
         c = auth.client_from_token_file(config.token_path, config.api_key)
