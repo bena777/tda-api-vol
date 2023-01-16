@@ -13,6 +13,7 @@ def get_option_chain(ticker,expiry):
     underlying_price=(r.json()['underlyingPrice'])
     dte=start_date-datetime.date.today()
     xx=(r.json()['putExpDateMap'][expiry+":"+str(dte.days)])
+    print(xx)
     vols={}
     deltas={}
     vegas={}
