@@ -1,6 +1,6 @@
 # The purpose of this function is to display multiple vol surfaces across different expiries in order to compare and contrast the same strike implied vols for different expiry dates.
 # Once again, TDA-dev keys and path will need to be specified from config.py file 
-# Created by Ben Adelman, all data belongs to TDA
+# Created by Ben A, all data belongs to TDA
 from main import tda_auth
 import datetime
 import matplotlib.pyplot as plt
