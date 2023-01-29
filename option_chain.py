@@ -54,7 +54,7 @@ def plot_option_chain(ticker,expiry):
     plt.show()
 
 
-def dollar_greeks(ticker,expiry):
+def plot_dollar_greeks(ticker,expiry):
     vols,deltas,gammas,thetas,vegas,strikes=get_option_chain(ticker,expiry).values()
     dollar_deltas=[]
     dollar_gammas=[]
@@ -67,4 +67,3 @@ def dollar_greeks(ticker,expiry):
     plt.ylabel('dollar gamma')
     plt.show()
     return {'dollar deltas':dollar_deltas,'dollar gammas':dollar_gammas}
-dollar_greeks(ticker,expiry)

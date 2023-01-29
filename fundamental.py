@@ -1,6 +1,9 @@
 from main import tda_auth
 import pandas as pd
-# initiliazes the request to authorize the API using the given dev code
+import matplotlib.pyplot as plt
+import numpy as np
+from mpl_toolkits.mplot3d import axes3d
+
 
 def get_fundamental(file='sp.csv'):
     c=tda_auth()
@@ -29,9 +32,19 @@ def get_fundamental(file='sp.csv'):
     df= pd.DataFrame(stats) #returns pandas dataframe with all fundamental data
     return df
 
-import matplotlib.pyplot as plt
-import numpy as np
-from mpl_toolkits.mplot3d import axes3d
+
+def plot_fundamental_2d(file='sp.csv'):
+    df = get_fundamental(file)
+    x=np.array(df['P/E'].values)
+    y=np.array(df['P/B'].values)
+    fig, ax = plt.subplots()
+    plt.title("S&P 500")
+    plt.xlabel("P/E")
+    plt.ylabel("P/B")
+    ax.scatter(x, y)
+    for i, txt in enumerate(df['ticker']):
+        ax.annotate(txt, (x[i], y[i]))
+    plt.show()
 
 
 def plot_fundamental_3d(file='sp.csv'):
@@ -53,4 +66,3 @@ def plot_fundamental_3d(file='sp.csv'):
         ax.text(x_l, y_l, z_l, label)
     plt.show()
 
-plot_fundamental_3d()
