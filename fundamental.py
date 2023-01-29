@@ -27,21 +27,30 @@ def get_fundamental(file='sp.csv'):
         i={'ticker':i,'P/E':pe,'PEG':peg,'P/B':pb,'PCF':pcf,'BVPS':bvps,'Beta':beta,'EPS':eps,'D/E':de,'52H':h52,'52L':l52,'div_yield':div_perc,'3_month_vol':volume}
         stats.append(i)
     df= pd.DataFrame(stats) #returns pandas dataframe with all fundamental data
-    import matplotlib.pyplot as plt
-    from sklearn.linear_model import LinearRegression
-    import numpy as np
-    model = LinearRegression()
-    x=np.array(df['P/E'].values).reshape(-1,1)
-    y=np.array(df['P/B'].values).reshape(-1,1)
-    model.fit(x,y)
-    fig, ax = plt.subplots()
+    return df
+
+import matplotlib.pyplot as plt
+import numpy as np
+from mpl_toolkits.mplot3d import axes3d
+
+
+def plot_fundamental_3d(file='sp.csv'):
+    df = get_fundamental(file)
+    # can change x,y,z values to whichever metric you prefer
+    x=np.array(df['P/E'].values)
+    y=np.array(df['P/B'].values)
+    z=np.array(df['EPS'].values)
+    # creates 3d plot axis and fig given x,y, and z values
+    fig = plt.figure()
+    ax = fig.add_subplot(111,projection='3d')
     plt.title("S&P 500")
     plt.xlabel("P/E")
     plt.ylabel("P/B")
-    ax.scatter(x, y)
-    for i,txt in enumerate(df['ticker']):
-        ax.annotate(txt,(x[i],y[i]))
-    plt.plot(model.predict(np.array((range(0,700))).reshape(-1,1)),color='r')
+    ax.scatter(x, y, z)
+    ax.set_zlabel("EPS")
+    plt.scatter(x,y,z)
+    for x_l, y_l, z_l, label in zip(x, y, z, df['ticker']):
+        ax.text(x_l, y_l, z_l, label)
     plt.show()
 
-get_fundamental("sp.csv")
+plot_fundamental_3d()
