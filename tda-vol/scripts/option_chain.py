@@ -1,9 +1,6 @@
-from main import tda_auth
+from auth.main import tda_auth
 import datetime
 import matplotlib.pyplot as plt
-import mplcyberpunk
-ticker='SPY' #type symbol with all capitol letters ex. 'AAPL'
-expiry='2023-02-17' #type str in YYYY-MM-DD format
 
 
 def get_option_chain(ticker,expiry,number_of_strikes=50):
@@ -30,6 +27,7 @@ def get_option_chain(ticker,expiry,number_of_strikes=50):
     strikes=[float(x) for x in strikes]
     strikes=[int(x) for x in strikes]
     return {'IVs':vols,'deltas':deltas,'gammas':gammas,'thetas':thetas,'vegas':vegas,'strikes':strikes}
+
 
 
 def plot_option_chain(ticker,expiry):
@@ -67,3 +65,4 @@ def plot_dollar_greeks(ticker,expiry):
     plt.ylabel('dollar gamma')
     plt.show()
     return {'dollar deltas':dollar_deltas,'dollar gammas':dollar_gammas}
+

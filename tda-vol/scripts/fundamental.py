@@ -1,11 +1,15 @@
-from main import tda_auth
+from auth.main import tda_auth
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
-from mpl_toolkits.mplot3d import axes3d
 
 
 def get_fundamental(file='sp.csv'):
+    """
+    Get fundamental data for a list of tickers. Can delete metrics as user sees fit in order to speed up computational time
+    :param file: Data file to be used in calculations; can be just a list of names does not have to contain data
+    :return: Pandas df
+    """
     c=tda_auth()
     df=pd.read_csv(file) #insert data CSV here
     df=(df["Symbol"].tolist())
@@ -35,7 +39,7 @@ def get_fundamental(file='sp.csv'):
 
 def plot_fundamental_2d(file='sp.csv'):
     df = get_fundamental(file)
-    x=np.array(df['P/E'].values)
+    x=np.array(df['BVPS'].values)
     y=np.array(df['P/B'].values)
     fig, ax = plt.subplots()
     plt.title("S&P 500")
@@ -66,3 +70,4 @@ def plot_fundamental_3d(file='sp.csv'):
         ax.text(x_l, y_l, z_l, label)
     plt.show()
 
+plot_fundamental_3d('sp.csv')
