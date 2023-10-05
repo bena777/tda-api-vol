@@ -1,7 +1,6 @@
-
-from auth.main import tda_auth
+from main import tda_auth
 from datetime import datetime
-def ivx_calculation(ticker,front,back):
+def ivx_calculation(ticker,front):
     """
     :param ticker:
     :param front month expiration date (Must be over 7DTE):
@@ -18,9 +17,6 @@ def ivx_calculation(ticker,front,back):
     price = c.get_quote(ticker).json()[ticker]['lastPrice']
     today = datetime.today().date()
     dte_front=(datetime.strptime(front,'%Y-%m-%d').date()-today).days
-    if dte_front<=7:
-        raise TypeError("Expiration must be more than a week out")
-    dte_back=(datetime.strptime(back,'%Y-%m-%d').date()-today).days
     atm_option = 0
     dif=1000
     for x in list(r.json()['callExpDateMap'][front+":"+str(dte_front)]):
@@ -29,14 +25,15 @@ def ivx_calculation(ticker,front,back):
             atm_option=x
     front_chain_c=r.json()['callExpDateMap'][str(front)+":"+str(dte_front)]
     front_chain_p=r.json()['putExpDateMap'][str(front)+":"+str(dte_front)]
-    back_chain_c=r.json()['callExpDateMap'][str(back)+":"+str(dte_back)]
-    back_chain_p=r.json()['putExpDateMap'][str(back)+":"+str(dte_back)]
     ivx_front=0
-    ivx_back=0
+    vols_c = [i[0]['volatility'] for i in list(front_chain_c.values())]
+    strikes = list(front_chain_c.keys())
+    vols_p = [i[0]['volatility'] for i in list(front_chain_p.values())]
 
-    ivx_front+=(front_chain_c[atm_option][0]['volatility']*0.6)+(front_chain_c[str(float(atm_option)+1)][0]['volatility']*0.3)+(front_chain_c[str(max(front_chain_c.keys()))][0]['volatility']*0.1)
-    ivx_front+=(front_chain_p[atm_option][0]['volatility']*0.6)+(front_chain_p[str(float(atm_option)-1)][0]['volatility']*0.3)+(front_chain_c[str(max(front_chain_c.keys()))][0]['volatility']*0.1)
-    ivx_back+=(back_chain_c[atm_option][0]['volatility']*0.6)+(back_chain_c[str(float(atm_option)+1)][0]['volatility']*0.3)+(back_chain_c[str(float(atm_option)+2)][0]['volatility']*0.1)
-    ivx_back+=(back_chain_p[atm_option][0]['volatility']*0.6)+(back_chain_p[str(float(atm_option)-1)][0]['volatility']*0.3)+(back_chain_c[str(float(atm_option)-2)][0]['volatility']*0.1)
+    atm_index = strikes.index(str(float(atm_option)))
+
+    ivx_front += (vols_c[atm_index]*0.6 + vols_c[atm_index+1]*0.3 + vols_c[atm_index-1]*0.1) #actually works and is more efficient but now need to work on actual methodlogy
+    ivx_front += (vols_p[atm_index]*0.6 + vols_p[atm_index+1]*0.3 + vols_p[atm_index-1]*0.1)
+
     ivx=(ivx_front/2)
     return ivx
