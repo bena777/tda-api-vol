@@ -33,5 +33,3 @@ def blackscholes(St,K,v,t,r,typee):
     gamma=(np.exp(-np.power(d1,2)/2))/(St*v*np.sqrt(2*np.pi*t))
     vega=(St*np.sqrt(t)*np.exp(-np.power(d1,2)/2))/(np.sqrt(2*np.pi)*100)
     return {'value':price,'nd2':N_d2,'delta':N_d1,'gamma':gamma,'theta':theta,'vega':vega}
-
-print(blackscholes(5.97,5,124,39,3,'p'))
